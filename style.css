@@ -1,0 +1,453 @@
+
+body {
+  font-family: Calibri, sans-serif;
+  background-color: #f0f3f7;
+  padding: 2rem;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent duplicate scrollbar */
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.table-inner {
+  padding: 1rem;
+  width: fit-content;
+  min-width: 100%;
+}
+
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+.table-scroll-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  padding: 1rem;   /* ← reduce padding */
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  /*outline: 2px dashed red;  /* Visualize bounds */
+}
+
+
+table {
+  border-collapse: collapse;
+  min-width: 1870px; /* forces horizontal scroll if content is wide */
+  width: max-content;
+  table-layout: fixed;
+}
+
+th, td {
+  padding: 8px 12px;
+  border: 1px solid #c0c0c0;
+  text-align: left;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+th {
+  background-color: #d9e1f2;
+  color: #000;
+  font-weight: bold;
+  border-bottom: 2px solid #9eb6d8;
+}
+
+tr:nth-child(even) {
+  background-color: #f8fbff;
+}
+
+.hidden-col {
+  display: none;
+}
+
+
+tr.highlighted-row {
+  background-color: #cde4ff !important;
+}
+
+.form-panel {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-panel h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-fields label {
+  font-weight: 600;
+}
+.form-fields input {
+  padding: 0.5rem;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+.form-buttons button {
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.form-buttons button:hover {
+  background-color: #ececec;
+}
+tr.highlighted-row {
+  background-color: #cde4ff !important;
+}
+
+.form-fields {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.form-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.form-column textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 60px;
+  max-height: none;/*: 200px;*/
+}
+
+.form-column label {
+  display: block;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.form-column input, .form-column textarea {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+
+.form-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/*#Field15 {
+  min-height: 200px !important;
+  font-family: monospace;
+}*/
+
+.hidden {
+  display: none;
+}
+
+input, textarea {
+  font-family: Calibri, sans-serif;
+}
+
+#scriptList li:hover {
+  background-color: #eef;
+}
+
+th {
+  user-select: none;
+}
+
+.sort-arrow {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #888;
+}
+
+#injectForm {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999; /* Ensure it's on top */
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+#injectForm * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+button:hover {
+  background: #e0e0e0;
+}
+
+#overlayBackground {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 998;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.modal-close:hover {
+  color: #d33;
+}
+
+tbody tr:hover {
+  background-color: #eef9ff;
+}
+
+tr[data-override="true"] {
+  background-color: #ffe0e0 !important;
+}
+
+td, th {
+  padding: 8px;
+  border: 1px solid #ccc;
+  vertical-align: top;
+  position: relative;
+  resize: vertical; /* Only affects textareas */
+}
+
+tr {
+  height: auto;
+}
+
+textarea.script-cell {
+  width: 100%;
+  resize: vertical;
+  min-height: 1em;
+  height: 1em;
+  max-height: none;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+}
+
+
+td.scripts {
+  padding: 0;                /* reduce padding to align with textarea */
+  vertical-align: top;
+}
+
+.scripts-cell {
+  max-width: 300px;
+  min-width: 200px;
+}
+
+.script-scrollbox {
+  max-height: none;/*120px;*/
+  min-height: 1em;
+  height: 1em;
+  overflow-y: auto;
+  padding: 4px;
+  white-space: pre-wrap;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  resize: vertical;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+#tableScrollWrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+#horizontalScrollProxy {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* full container width */
+  height: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  z-index: 1000;
+  background: transparent;
+  pointer-events: auto;
+}
+
+#scrollProxyInner {
+  height: 1px;
+  width: 3000px; /* This will be overridden by JS */
+}
+
+
+#horizontalScrollProxy > div {
+  height: 1px;
+}
+
+#tableScrollWrapper::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.form-body {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.form-buttons-panel hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 0.75rem 0;
+}
+
+.form-buttons-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #ffffff; /* ← make background match form panel */
+  border-radius: 6px;
+  border: 1px solid #ddd;  /* adds subtle structure */
+  box-shadow: none;        /* remove soft inner shadow */
+}
+
+
+.form-buttons-panel button {
+  font-size: 13px;
+  padding: 5px 10px;
+  white-space: nowrap;
+  width: 100%;
+  text-align: left;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.form-buttons-panel button:hover {
+  background-color: #e6e6e6;
+}
+
+.destructive-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ddd;
+}
+
+.destructive-actions button {
+  background-color: #ffe5e5;
+  color: #900;
+  font-weight: bold;
+}
+
+.destructive-actions button:hover {
+  background-color: #ffcfcf;
+}
+
+#closeFormBtn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #444;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+  z-index: 2;
+  transition: color 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+#closeFormBtn:hover {
+  color: #d00;
+}
+
+#formHeader {
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: drag;
+  position: relative; /* 🟢 REQUIRED for closeBtn absolute pos */
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ccc;
+  padding: 8px 12px;
+  font-weight: bold;
+  font-size: 16px;
+}
+

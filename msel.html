@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MSEL Inject Table</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="./js/exceljs.min.js"></script>
+  <script src="./js/FileSaver.min.js"></script>
+  <script src="./js/jspdf.umd.min.js"></script>
+  <script src="./js/jspdf.plugin.autotable.min.js"></script>
+  <script src="./js/index.iife.js"></script>
+  <!--<script src="./js/xlsx.full.min.js"></script>-->
+  
+
+
+</head>
+<body>
+  <h1>MSEL Inject View</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+  <!-- Data Controls -->
+  <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+    <button onclick="autoSaveTableData()">💾 Save Now</button>
+    <button onclick="manualBackupDownload()">📦 Save Backup</button>
+    <button onclick="loadFromBackup()">📂 Load Save</button>
+    <button onclick="clearSavedData()">🧹 Clear Saved Data</button>
+  </div>
+
+  <!-- Export Options -->
+  <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+    <button onclick="exportToExcel()">📊 Export to Excel</button>
+    <button onclick="exportToPDF()">📰 Export to MSEL to PDF</button>
+    <button onclick="exportInjectsToPDF()">📝 Export Scripts to PDF</button>
+    <button onclick="exportInjectsToDOCX()">📝 Export Scripts to Word</button>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+    <button onclick="showScriptEditor()">🎬 Create Script Templates</button>
+    <button onclick="exportScripts()">📤 Export Scripts</button>
+    <button onclick="importScripts()">📥 Import Scripts</button>
+  </div>
+
+  <!-- Planning Tools -->
+  <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+    <button onclick="promptTrainingUnits()">🏋️ Add Unit Training Info</button>
+    <button onclick="openInjectForm()">➕ Add New Inject</button>
+  </div>
+
+  <!-- File Upload -->
+  <div style="display: flex; flex-direction: column; gap: 0.4rem; align-items: center;">
+    <label for="fileInput" style="font-weight: bold;">📥 Import File</label>
+    <input type="file" id="fileInput" accept=".csv,.xlsx" />
+  </div>
+</div>
+
+<!-- Container for dynamic training unit form -->
+<div id="unitTrainingFormContainer" style="display:none; text-align:center; margin-bottom: 1rem;"></div>
+
+<!-- Where the submitted info will be shown -->
+<div id="unitTrainingDisplay" style="text-align:left; margin: 1rem auto; max-width: 1200px;"></div>
+
+  <div id="overlayBackground" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 998;
+"></div>
+
+<div id="scriptEditorContainer" style="display:none; max-width: 1200px; margin: 1rem auto; background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+  <h3>Script Manager</h3>
+  <div style="display: flex; gap: 1rem;">
+    <!-- Script list -->
+    <div style="flex: 1;">
+      <ul id="scriptList" style="list-style:none; padding:0; border:1px solid #ccc; max-height: 300px; overflow-y: auto;"></ul>
+    </div>
+    <!-- Script editor -->
+    <div style="flex: 3;">
+      <label for="scriptTitle"><strong>Title</strong></label>
+      <input type="text" id="scriptTitle" style="width: 100%; margin-bottom: 0.5rem;" />
+
+      <label for="scriptBody"><strong>Script</strong></label>
+      <textarea id="scriptBody" style="width: 100%; height: 200px;"></textarea>
+
+      <div style="margin-top: 0.5rem;">
+        <button onclick="newScript()">New</button>
+        <button onclick="saveScript()">Save</button>
+        <button onclick="deleteScript()">Delete</button>
+        <button onclick="cancelScriptEdit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="form-panel" id="injectForm" style="display:none;">
+  <div class="form-body">
+    <div class="form-buttons-panel">
+      <div class="form-buttons-panel">
+        <button onclick="saveEditsOnly()">💾 Save</button>
+        <button onclick="saveEdits()">💾 Save and Close</button>
+        <button onclick="addNewRow(true)">➕ Add and New</button>
+        <button onclick="addNewRow(false)">➕ Add and Close</button>
+        <button onclick="loadPrevious()">⬆️ Previous</button>
+        <button onclick="loadNext()">⬇️ Next</button>
+
+        <hr>
+
+        <div class="destructive-actions">
+          <button onclick="clearForm()">🧼 Clear</button>
+          <button onclick="cancelForm()">🚫 Cancel</button>
+          <button onclick="deleteCurrentRow()">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-fields">  </div>
+  </div>
+</div>
+
+  <div id="tableScrollWrapper" class="table-scroll-wrapper">
+    <div class="table-inner">
+      <table>
+          <thead>
+            <tr>
+ <!-- 0-->     <th>Line #<span class="sort-arrow"></span></th>
+ <!-- 1-->     <th>Date<span class="sort-arrow"></span></th>
+ <!-- 2-->     <th>Time<span class="sort-arrow"></span></th>
+ <!-- 3-->     <th>Storyline<span class="sort-arrow"></span></th>
+ <!-- 4-->     <th>Event<span class="sort-arrow"></span></th>
+ <!-- 5-->     <th>Inject<span class="sort-arrow"></span></th>
+ <!-- 6-->     <th>Description<span class="sort-arrow"></span></th>
+ <!-- 7-->     <th>Control Zone<span class="sort-arrow"></span></th>
+ <!-- 8-->     <th>Inject Platform<span class="sort-arrow"></span></th>
+ <!-- 9-->     <th>Method<span class="sort-arrow"></span></th>
+ <!-- 10-->    <th>Target Audience<span class="sort-arrow"></span></th>
+ <!-- 11-->    <th>Narrative for storyline / Notes<span class="sort-arrow"></span></th>
+ <!-- 12-->    <th>T&R Event<span class="sort-arrow"></span></th>
+ <!-- 13-->    <th>Scripts<span class="sort-arrow"></span></th>
+ <!-- 14-->    <th class="hidden" aria-hidden="true">Row#<span class="sort-arrow"></span></th>
+ <!-- 15-->    <th class="hidden" aria-hidden="true">Override<span class="sort-arrow"></span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+      </table>
+    </div>
+  </div>
+        <div id="horizontalScrollProxy"><div id="scrollProxyInner"></div></div>
+  <script src="import.js"></script>
+</body>
+</html>
