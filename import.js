@@ -131,23 +131,6 @@ function renderTable(data) {
 }
 
 
-function resizeProxyWidth() {
-  const table = document.querySelector('table');
-  const proxy = document.querySelector('#horizontalScrollProxy > div');
-
-  if (table && proxy) {
-    const tableRect = table.getBoundingClientRect();
-    const wrapperRect = document.querySelector('.table-scroll-wrapper').getBoundingClientRect();
-
-    const trueScrollWidth = table.scrollWidth || table.offsetWidth || tableRect.width;
-    const containerWidth = wrapperRect.width;
-
-    const needsScroll = trueScrollWidth > containerWidth;
-    const extraBuffer = needsScroll ? 40 : 0;
-
-    proxy.style.width = wrapper.scrollWidth + 'px';
-  }
-}
 
 
 

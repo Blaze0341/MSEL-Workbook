@@ -1,0 +1,5 @@
+# Ignore backups and temporary files
+*Backup.json
+scripts_backup.json
+MEDBN_*.xlsx
+*.DS_Store
