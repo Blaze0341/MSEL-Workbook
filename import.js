@@ -1762,10 +1762,19 @@ function manageScrollVisibility() {
 }
 
 function resizeProxyWidth() {
-  const table = document.querySelector('table');
+  const wrapper = document.getElementById('tableScrollWrapper');
+  const table = wrapper ? wrapper.querySelector('table') : null;
   const proxy = document.getElementById('scrollProxyInner');
-  if (table && proxy) {
-    proxy.style.width = table.scrollWidth + 'px';
+
+  if (wrapper && table && proxy) {
+    const tableRect = table.getBoundingClientRect();
+    const trueWidth = table.scrollWidth || table.offsetWidth || tableRect.width;
+    const containerWidth = wrapper.clientWidth;
+
+    const needsScroll = trueWidth > containerWidth;
+    const extraBuffer = needsScroll ? 40 : 0;
+
+    proxy.style.width = (trueWidth + extraBuffer) + 'px';
   }
 }
 
