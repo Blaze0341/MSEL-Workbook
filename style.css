@@ -56,7 +56,8 @@ th, td {
   padding: 8px 12px;
   border: 1px solid #c0c0c0;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
   font-size: 14px;
 }
 
@@ -133,6 +134,10 @@ tr.highlighted-row {
 .form-column {
   flex: 1;
   min-width: 300px;
+}
+
+.script-column {
+  flex-basis: 100%;
 }
 
 .form-column textarea {
@@ -284,14 +289,15 @@ td.scripts {
 }
 
 .scripts-cell {
-  max-width: 300px;
-  min-width: 200px;
+  max-width: 450px;
+  min-width: 250px;
 }
 
 .script-scrollbox {
   max-height: none;/*120px;*/
   min-height: 1em;
   height: 1em;
+  line-height: 1em;
   overflow-y: auto;
   padding: 4px;
   white-space: pre-wrap;

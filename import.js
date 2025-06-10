@@ -95,8 +95,11 @@ function renderTable(data) {
       row[11] || '',
       row[12] || '',
       scriptText,
-      i + 1, // Hidden Row# for tracking
+      row[14] || (i + 1), // Hidden Row# for tracking
+      row[15] || 'false' // Override flag
     ];
+
+    if (cells[15] === 'true') tr.dataset.override = 'true';
 
     cells.forEach((value, colIndex) => {
       const td = document.createElement('td');
@@ -111,7 +114,7 @@ function renderTable(data) {
         td.appendChild(scrollBox);
       } else {
         td.textContent = value;
-        if (colIndex === 14) td.classList.add('hidden-col'); // Row# hidden
+        if (colIndex === 14 || colIndex === 15) td.classList.add('hidden-col');
       }
 
       tr.appendChild(td);
@@ -131,23 +134,6 @@ function renderTable(data) {
 }
 
 
-function resizeProxyWidth() {
-  const table = document.querySelector('table');
-  const proxy = document.querySelector('#horizontalScrollProxy > div');
-
-  if (table && proxy) {
-    const tableRect = table.getBoundingClientRect();
-    const wrapperRect = document.querySelector('.table-scroll-wrapper').getBoundingClientRect();
-
-    const trueScrollWidth = table.scrollWidth || table.offsetWidth || tableRect.width;
-    const containerWidth = wrapperRect.width;
-
-    const needsScroll = trueScrollWidth > containerWidth;
-    const extraBuffer = needsScroll ? 40 : 0;
-
-    proxy.style.width = wrapper.scrollWidth + 'px';
-  }
-}
 
 
 
@@ -199,10 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (formFields && formFields.childElementCount === 0) {
     const column1 = document.createElement('div');
     const column2 = document.createElement('div');
-    const column3 = document.createElement('div');
+    const scriptColumn = document.createElement('div');
     column1.className = 'form-column';
     column2.className = 'form-column';
-    column3.className = 'form-column';
+    scriptColumn.className = 'form-column script-column';
 
     labels.forEach((labelText, i) => {
       const fieldNum = i + 1;
@@ -255,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
           label.insertBefore(dropdown, input);  // `input` is Field13 already
-          column3.appendChild(label);
+          scriptColumn.appendChild(label);
 
 
 
@@ -270,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     formFields.appendChild(column1);
     formFields.appendChild(column2);
-    formFields.appendChild(column3);
+    formFields.appendChild(scriptColumn);
   }
 
   ensureOverrideCheckbox();
@@ -1650,29 +1636,6 @@ async function exportInjectsToPDF() {
   }
 }
 
-function openInjectForm() {
-  document.getElementById('injectForm').style.display = 'block';
-  document.getElementById('overlayBackground').style.display = 'block';
-  clearForm();
-  currentEditingRow = null;
-  // Ensure this runs after all Field1–Field14 are generated and added to .form-fields
-const formFieldsContainer = document.querySelector('.form-fields');
-
-// Avoid duplicate checkbox on repeated opens
-if (!document.getElementById('overrideLine')) {
-  const overrideDiv = document.createElement('div');
-  overrideDiv.style.width = '100%';
-  overrideDiv.style.marginTop = '1rem';
-  overrideDiv.innerHTML = `
-    <label style="font-weight: bold;">
-      <input type="checkbox" id="overrideLine" />
-      Override Auto Line Number
-    </label>
-  `;
-  formFieldsContainer.appendChild(overrideDiv);
-}
-
-}
 
 function exportInjectsToDOCX() {
   const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageBreak } = window.docx;
@@ -1799,10 +1762,19 @@ function manageScrollVisibility() {
 }
 
 function resizeProxyWidth() {
-  const table = document.querySelector('table');
+  const wrapper = document.getElementById('tableScrollWrapper');
+  const table = wrapper ? wrapper.querySelector('table') : null;
   const proxy = document.getElementById('scrollProxyInner');
-  if (table && proxy) {
-    proxy.style.width = table.scrollWidth + 'px';
+
+  if (wrapper && table && proxy) {
+    const tableRect = table.getBoundingClientRect();
+    const trueWidth = table.scrollWidth || table.offsetWidth || tableRect.width;
+    const containerWidth = wrapper.clientWidth;
+
+    const needsScroll = trueWidth > containerWidth;
+    const extraBuffer = needsScroll ? 40 : 0;
+
+    proxy.style.width = (trueWidth + extraBuffer) + 'px';
   }
 }
 
