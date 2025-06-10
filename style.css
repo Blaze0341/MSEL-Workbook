@@ -136,6 +136,10 @@ tr.highlighted-row {
   min-width: 300px;
 }
 
+.script-column {
+  flex-basis: 100%;
+}
+
 .form-column textarea {
   width: 100%;
   resize: vertical;
