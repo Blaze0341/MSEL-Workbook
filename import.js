@@ -95,8 +95,11 @@ function renderTable(data) {
       row[11] || '',
       row[12] || '',
       scriptText,
-      i + 1, // Hidden Row# for tracking
+      row[14] || (i + 1), // Hidden Row# for tracking
+      row[15] || 'false' // Override flag
     ];
+
+    if (cells[15] === 'true') tr.dataset.override = 'true';
 
     cells.forEach((value, colIndex) => {
       const td = document.createElement('td');
@@ -111,7 +114,7 @@ function renderTable(data) {
         td.appendChild(scrollBox);
       } else {
         td.textContent = value;
-        if (colIndex === 14) td.classList.add('hidden-col'); // Row# hidden
+        if (colIndex === 14 || colIndex === 15) td.classList.add('hidden-col');
       }
 
       tr.appendChild(td);

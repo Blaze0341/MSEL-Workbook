@@ -56,7 +56,8 @@ th, td {
   padding: 8px 12px;
   border: 1px solid #c0c0c0;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
   font-size: 14px;
 }
 
